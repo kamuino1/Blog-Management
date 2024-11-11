@@ -42,5 +42,8 @@ namespace App.Models.Blog
 
         [Display(Name = "Ngày cập nhật")]
         public DateTime DateUpdated { set; get; }
+
+        [Display(Name = "Lượt xem")]
+        public int Views { get; set; }
     }
 }
