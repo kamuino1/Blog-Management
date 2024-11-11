@@ -1,0 +1,10 @@
+@model List<App.Models.ProductModel>
+
+<h1>Danh sách sản phẩm</h1>
+
+<ul>
+    @foreach(var product in Model){
+        <li>@product.Name</li>
+    }
+</ul>
+

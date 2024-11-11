@@ -2,7 +2,76 @@
     ViewData["Title"] = "Home Page";
 }
 
+<partial name="_AlertMessage"/>
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<textarea id="summernoteEditor"></textarea>
+<textarea id="summernoteEditor2"></textarea>
+
+@{
+    var summernote = new App.Models.Summernote("#summernoteEditor");
+    var summernote2 = new App.Models.Summernote("#summernoteEditor2", false);
+}
+
+<partial name="_Summernote" model="summernote"></partial>
+<partial name="_Summernote" model="summernote2"></partial>
+
+    
+
+
+
+
+<p>
+    @Url.ActionLink()
+</p>
+<p>
+    @Url.Action()
+</p>
+<p>
+    @Url.Action("Privacy")
+</p>
+<p>
+    @Url.Action("Privacy", new {id = 123, name = "TIen"})
+</p>
+<p>
+    @Url.Action("Earth", "Planet")
+</p>
+<p>
+    @Url.Action("PlanetInfor", "Planet", new{id = 1})
+</p>
+<p>
+    @Url.Action("Index", "Product", new{area = "ProductManage"})
+</p>
+
+<hr>
+
+<p>@Url.RouteUrl("default", new{action = "HelloView", controller = "First"})</p>
+<p>
+    <a asp-action="PlanetInfor" asp-controller="Planet" asp-route-id="1">VD1</a>
+</p>
+@{
+    var routeData = new Dictionary<string, string>(){
+        {"name","Tien"},
+        {"abc","Xyz"},
+        {"id","1"}
+        };
+}
+
+<p>
+    <a asp-action="PlanetInfor" asp-controller="Planet" asp-all-route-data="@routeData">VD2</a>
+</p>
+
+<p>
+    <a asp-action="PlanetInfor" asp-controller="Planet" asp-all-route-data='new Dictionary<string, string>(){
+        {"name","pat"},
+        {"abc","wqe"},
+        {"id","1"}
+        }'>VD3</a>
+</p>
+
+<p>
+    <a asp-action="Index" asp-controller="Product" asp-area="ProductManage">Danh sách sản phẩm</a>
+</p>
