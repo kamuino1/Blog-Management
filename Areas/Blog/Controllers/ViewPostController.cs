@@ -89,6 +89,10 @@ namespace App.Areas.Blog.Controllers
             {
                 return NotFound("Không tìm thấy bài viết");
             }
+
+            post.Views++;
+            _appDbContext.Update(post);
+            _appDbContext.SaveChanges();
             var category = post.PostCategories.FirstOrDefault()?.Category;
             ViewBag.category = category;
 

@@ -30,7 +30,8 @@
     <div class="sapo">@Model.Description</div>
     <div>
         <i>Cập nhật: @Model.DateUpdated</i> / 
-        Tác giả: <strong>@Model.Author.UserName</strong>
+        Tác giả: <strong>@Model.Author.UserName</strong> /
+        Lượt xem: @Model.Views
     </div>
     <hr>
     @Html.Raw(Model.Content)

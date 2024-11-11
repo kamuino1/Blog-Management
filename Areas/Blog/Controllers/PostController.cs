@@ -81,6 +81,9 @@ namespace App.Areas.Blog.Controllers
             {
                 return NotFound();
             }
+            post.Views++;
+            _context.Update(post);
+            await _context.SaveChangesAsync();
 
             return View(post);
         }
