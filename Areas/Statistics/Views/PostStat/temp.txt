@@ -1,0 +1,107 @@
+<div class="row">
+            <%--  Filter  --%>
+            <aside class="col-md-8">
+                <header class="card-header-custom">
+                    <h5 class="card-custom-title">${sortAndFilter}</h5>
+                </header>
+                <form name="filtration" method="get" action="schedule">
+                    <input type="hidden" name="command" value="schedulePage">
+                    <div class="card-group">
+                        <article class="card card-filter">
+                            <div class="filter-content">
+                                <div class="card-body">
+                                    <h5 class="card-title">${showSorter}</h5>
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio"
+                                               name="show" value="all"
+                                               <c:if test="${param.show == null || param.show == 'all'}">checked</c:if>>
+                                        <span class="form-check-label">${showSorterAll}</span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio" name="show"
+                                               value="onlyAvailable"
+                                               <c:if test="${param.show == 'onlyAvailable'}">checked</c:if>>
+                                        <span class="form-check-label">${showSorterOnlyAv}</span>
+                                    </label>
+                                </div> <!-- card-body.// -->
+                            </div>
+                        </article> <!-- card-group-item.// -->
+
+                        <article class="card card-sorter">
+                            <div class="filter-content">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5 class="card-title">${sortBy}</h5>
+                                            <div class="form-group">
+                                                <select name="sortBy" id="sortBy" class="form-control"
+                                                        style="min-width: 150px;" required>
+                                                    <option value="dateTime"
+                                                            <c:if test="${param.sortBy == 'dateTime'}">selected</c:if>>
+                                                        ${sortDatetime}</option>
+                                                    <option value="filmName"
+                                                            <c:if test="${param.sortBy == 'filmName'}">selected</c:if>>
+                                                        ${sortFilmName}</option>
+                                                    <option value="seatsRemain"
+                                                            <c:if test="${param.sortBy == 'seatsRemain'}">selected</c:if>>
+                                                        ${sortSeatsRemain}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5 class="card-title">${sortMethod}</h5>
+                                            <div class="form-group">
+                                                <select name="sortMethod" id="sortMethod" class="form-control"
+                                                        style="min-width: 150px;"
+                                                        required>
+                                                    <option value="asc"
+                                                            <c:if test="${param.sortMethod == 'asc'}">selected</c:if>>${asc}</option>
+                                                    <option value="desc"
+                                                            <c:if test="${param.sortMethod == 'desc'}">selected</c:if>>${desc}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <%--<div class="w-100"></div>--%>
+
+                                    </div>
+                                </div> <!-- card-body.// -->
+                            </div>
+                        </article>
+                        <div class="w-100"></div>
+                        <article class="card card-sorter" style="border-top: 0;">
+                            <div class="row">
+                                <div class="col-6 py-2 filter-helper">
+                                    <label for="amountSelector" class="py-1">${selectSizeLabel}: </label>
+                                    <select id="amountSelector" class="form-control form-select" name="size">
+                                        <option value>${selectSizeLabel}</option>
+                                        <option value="2" <c:if test="${param.size == '2'}">selected</c:if>>
+                                            2
+                                        </option>
+                                        <option value="4" <c:if test="${param.size == '4'}">selected</c:if>>
+                                            4
+                                        </option>
+                                        <option value="10" <c:if test="${param.size == '10'}">selected</c:if>>
+                                            10
+                                        </option>
+                                        <option value="20" <c:if test="${param.size == '20'}">selected</c:if>>
+                                            20
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-3 py-2 filter-helper">
+                                    <button type="submit" class="btn btn-primary w-25 btn-sorter">${submitBtn}
+                                    </button>
+                                </div>
+                                <div class="col-3 py-2 filter-helper">
+                                    <a type="button" href="${pageContext.request.contextPath}/main?command=schedulePage"
+                                       class="btn btn-outline-secondary w-25 btn-sorter">${clearBtn}
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                    </div> <!-- card.// -->
+                </form>
+            </aside> <!-- col.// -->
+        </div>

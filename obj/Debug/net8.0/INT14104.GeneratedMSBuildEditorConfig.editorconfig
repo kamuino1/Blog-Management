@@ -318,6 +318,22 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUHJvZHVjdE1hbmFnZVxWaWV3c1xfVmlld1N0YXJ0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/1/1/.net/INT14104/Areas/Statistics/Views/PostStat/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcU3RhdGlzdGljc1xWaWV3c1xQb3N0U3RhdFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1/1/.net/INT14104/Areas/Statistics/Views/PostStat/_LayoutBlog.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcU3RhdGlzdGljc1xWaWV3c1xQb3N0U3RhdFxfTGF5b3V0QmxvZy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1/1/.net/INT14104/Areas/Statistics/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcU3RhdGlzdGljc1xWaWV3c1xfVmlld0ltcG9ydHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/1/1/.net/INT14104/Areas/Statistics/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcU3RhdGlzdGljc1xWaWV3c1xfVmlld1N0YXJ0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/1/1/.net/INT14104/Views/First/HelloView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlyc3RcSGVsbG9WaWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

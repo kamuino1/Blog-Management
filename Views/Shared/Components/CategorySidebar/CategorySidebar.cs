@@ -14,6 +14,7 @@ namespace App.Components
             public List<Category> Categories { get; set; }
             public int level { get; set; }
             public string Categoryslug { get; set; }
+            public string Controller { get; set; }
         }
 
         public IViewComponentResult Invoke(CategorySidebarData data)
