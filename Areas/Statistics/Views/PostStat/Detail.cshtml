@@ -5,7 +5,6 @@
     var category = ViewBag.category as Category;
     ViewData["Title"] = Model.Title;
 
-    IQueryable<Post> otherPosts = ViewBag.otherPosts as IQueryable<Post>;
 }
 
 <nav aria-label="breadcrumb">
@@ -45,15 +44,6 @@
         Categories = categories,
         level = 0,
         Categoryslug = category.Slug,
-        Controller = "ViewPost"
+        Controller = "PostStat"
     })
-    <ul class="list-group">
-    @foreach(var post in otherPosts){
-        <li class=" list-group-item">
-            <a asp-action="Detail" asp-controller="ViewPost" asp-route-postslug = "@post.Slug">
-                @post.Title
-            </a>
-        </li>
-    }
-</ul>
 }    

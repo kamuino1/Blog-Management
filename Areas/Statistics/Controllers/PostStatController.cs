@@ -26,36 +26,36 @@ namespace App.Areas.Statistics.Controllers
             _userManager = userManager;
         }
 
+        // [HttpGet]
+        // [Route("/stat/post/{categoryslug?}")]
+        // public async Task<IActionResult> Index(string categoryslug)
+        // {
+        //     Category category = null;
+        //     if (!string.IsNullOrEmpty(categoryslug))
+        //     {
+        //         category = await _context.Categories.FirstOrDefaultAsync(c => c.Slug == categoryslug);
+        //     }
+        //     var posts = await GetPostByUserAsync(category?.Id);
+
+        //     int totalPosts = posts.Count;
+        //     var totalViews = posts.Sum(post => post.Views);
+        //     var categories = GetCategories();
+
+        //     ViewBag.categories = categories;
+        //     ViewBag.TotalViews = totalViews;
+        //     ViewBag.category = category;
+        //     ViewBag.categoryslug = categoryslug;
+        //     ViewBag.sortModel = new SortModel()
+        //     {
+        //         DateFrom = new DateTime(2023, 1, 1),
+        //         DateTo = DateTime.Now,
+        //         Order = "date"
+        //     };
+
+        //     return View(posts);
+        // }
+
         [HttpGet]
-        [Route("/stat/post/{categoryslug?}")]
-        public async Task<IActionResult> Index(string categoryslug)
-        {
-            Category category = null;
-            if (!string.IsNullOrEmpty(categoryslug))
-            {
-                category = await _context.Categories.FirstOrDefaultAsync(c => c.Slug == categoryslug);
-            }
-            var posts = await GetPostByUserAsync(category?.Id);
-
-            int totalPosts = posts.Count;
-            var totalViews = posts.Sum(post => post.Views);
-            var categories = GetCategories();
-
-            ViewBag.categories = categories;
-            ViewBag.TotalViews = totalViews;
-            ViewBag.category = category;
-            ViewBag.categoryslug = categoryslug;
-            ViewBag.sortModel = new SortModel()
-            {
-                DateFrom = new DateTime(2023, 1, 1),
-                DateTo = DateTime.Now,
-                Order = "date"
-            };
-
-            return View(posts);
-        }
-
-        [HttpPost]
         [Route("/stat/post/{categoryslug?}")]
         public async Task<IActionResult> Index(SortModel sortModel, string categoryslug)
         {
@@ -79,7 +79,7 @@ namespace App.Areas.Statistics.Controllers
                 }
                 else if (sortModel.Order == "title")
                 {
-                    posts = posts.OrderByDescending(post => post.Title).ToList();
+                    posts = posts.OrderBy(post => post.Title).ToList();
                 }
                 else
                 {
@@ -101,6 +101,30 @@ namespace App.Areas.Statistics.Controllers
         }
 
 
+        [Route("/stat/post/{postslug}.html")]
+        public IActionResult Detail(string postslug)
+        {
+            var categories = GetCategories();
+            ViewBag.categories = categories;
+
+            var post = _context.Posts.Where(p => p.Slug == postslug)
+                                    .Include(p => p.Author)
+                                    .Include(p => p.PostCategories)
+                                    .ThenInclude(pc => pc.Category)
+                                    .FirstOrDefault();
+            if (post == null)
+            {
+                return NotFound("Không tìm thấy bài viết");
+            }
+
+            post.Views++;
+            _context.Update(post);
+            _context.SaveChanges();
+            var category = post.PostCategories.FirstOrDefault()?.Category;
+            ViewBag.category = category;
+            return View(post);
+        }
+
         public async Task<List<Post>> GetPostByUserAsync(int? categoryId)
         {
             var user = await _userManager.GetUserAsync(this.User);
@@ -118,6 +142,8 @@ namespace App.Areas.Statistics.Controllers
             }
             return posts;
         }
+
+
 
         public List<Category> GetCategories()
         {

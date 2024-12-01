@@ -26,7 +26,47 @@
 
 
 <h1>@ViewData["Title"]</h1>
+
+
+
 <hr>
+<h3>Tổng số bài viết: @Model.Count()</h3>
+<h3>Tổng số lượt xem: @TotalViews</h3>
+
+@foreach(var post in Model){
+    <div class="d-flex border-bottom mb-3 pb-3">
+        <img src="/contents/241020-132450.png" class="me-3 " alt="Media Image" style="width: 100px;">
+        <div class="flex-grow-1">
+            <h5 class="mt-0">
+                <a asp-controller="PostStat" asp-action="Detail" asp-area="Statistics" asp-route-postslug = "@post.Slug">
+                    @post.Title
+                </a>
+            </h5>
+            @post.Description
+            <div>
+                Chủ đề:
+                <strong class="text-danger"> @post.PostCategories.FirstOrDefault()?.Category.Title</strong>
+            </div>
+            <div class="author-row">
+                Tác giả: <strong>@post.Author.UserName</strong> |
+                Ngày tạo: <i>@post.DateCreated.ToShortDateString()</i> |
+                Lượt xem: <i>@post.Views</i>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section Sidebar{
+    @await Component.InvokeAsync("App.Components.CategorySidebar",
+    new App.Components.CategorySidebar.CategorySidebarData(){
+        Categories = categories,
+        level = 0,
+        Categoryslug = ViewBag.categoryslug,
+        Controller = "PostStat"
+    })
+
+    <hr>
 
 <div class="row">
     @* Filter *@
@@ -34,7 +74,7 @@
         <header class="card-header-custom">
             <h5 class="card-custom-title">Filter</h5>
         </header>
-        <form asp-action="Index" method="post">
+        <form asp-action="Index" method="get">
             <div class="card-group">
                 <article class="card card-filter">
                     <div class="filter-content">
@@ -63,43 +103,5 @@
         </form>
     </aside> <!-- col.// -->
 </div>
-
-
-<hr>
-<h3>Tổng số bài viết: @Model.Count()</h3>
-<h3>Tổng số lượt xem: @TotalViews</h3>
-
-@foreach(var post in Model){
-    <div class="d-flex border-bottom mb-3 pb-3">
-        <img src="/contents/241020-132450.png" class="me-3 " alt="Media Image" style="width: 100px;">
-        <div class="flex-grow-1">
-            <h5 class="mt-0">
-                <a asp-controller="ViewPost" asp-action="Detail" asp-route-postslug = "@post.Slug">
-                    @post.Title
-                </a>
-            </h5>
-            @post.Description
-            <div>
-                Chủ đề:
-                <strong class="text-danger"> @post.PostCategories.FirstOrDefault()?.Category.Title</strong>
-            </div>
-            <div class="author-row">
-                Tác giả: <strong>@post.Author.UserName</strong> |
-                Ngày tạo: <i>@post.DateCreated.ToShortDateString()</i> |
-                Lượt xem: <i>@post.Views</i>
-            </div>
-        </div>
-    </div>
-
-}
-
-@section Sidebar{
-    @await Component.InvokeAsync("App.Components.CategorySidebar",
-    new App.Components.CategorySidebar.CategorySidebarData(){
-        Categories = categories,
-        level = 0,
-        Categoryslug = ViewBag.categoryslug,
-        Controller = "PostStat"
-    })
 }    
 

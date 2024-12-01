@@ -17,7 +17,7 @@ namespace App.Areas.Identity.Models.AccountViewModels
         public string UserNameOrEmail { get; set; }
 
 
-        [Required]
+        [Required(ErrorMessage = "Phải nhập {0}")]
         [DataType(DataType.Password)]
         [Display(Name = "Mật khẩu")]
         public string Password { get; set; }

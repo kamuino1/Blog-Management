@@ -104,6 +104,8 @@ namespace App.Areas.Blog.Controllers
             return View(post);
         }
 
+
+
         public List<Category> GetCategories()
         {
             var categories = _appDbContext.Categories

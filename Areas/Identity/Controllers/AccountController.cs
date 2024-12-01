@@ -64,11 +64,11 @@ namespace App.Areas.Identity.Controllers
             if (ModelState.IsValid)
             {
 
-                var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, model.RememberMe, lockoutOnFailure: true);
+                var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail.Trim(), model.Password, model.RememberMe, lockoutOnFailure: true);
                 // Tìm UserName theo Email, đăng nhập lại
                 if ((!result.Succeeded) && AppUtilities.IsValidEmail(model.UserNameOrEmail))
                 {
-                    var user = await _userManager.FindByEmailAsync(model.UserNameOrEmail);
+                    var user = await _userManager.FindByEmailAsync(model.UserNameOrEmail.Trim());
                     if (user != null)
                     {
                         result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: true);
@@ -129,7 +129,7 @@ namespace App.Areas.Identity.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new AppUser { UserName = model.UserName, Email = model.Email };
+                var user = new AppUser { UserName = model.UserName.Trim(), Email = model.Email.Trim() };
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
@@ -152,7 +152,7 @@ namespace App.Areas.Identity.Controllers
                             },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(model.Email,
+                    await _emailSender.SendEmailAsync(model.Email.Trim(),
                         "Xác nhận địa chỉ email",
                         @$"Bạn đã đăng ký tài khoản trên RazorWeb, 
                            hãy <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>bấm vào đây</a> 
@@ -397,7 +397,7 @@ namespace App.Areas.Identity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
+                var user = await _userManager.FindByEmailAsync(model.Email.Trim());
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
@@ -453,7 +453,7 @@ namespace App.Areas.Identity.Controllers
             {
                 return View(model);
             }
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email.Trim());
             if (user == null)
             {
                 return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
