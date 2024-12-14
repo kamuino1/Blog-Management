@@ -1,0 +1,21 @@
+
+@inject App.Services.PlanetService planetService
+
+<h1>Các hành tinh trong hệ mặt trời</h1>
+
+<div class="list-group">
+    @foreach(var planet in planetService){
+        <a class="list-group-item list-group-item-action"  asp-action="@planet.Name">
+            @* không cần khai báo asp-controller="Planet" để chỉ ra controller hiện tại trỏ tới Index.cshtml *@
+            @planet.Name - @planet.VnName
+        </a>
+}
+</div>
+
+<p>
+    @Url.RouteUrl("TraiDat1")
+</p>
+
+<p>
+    @Url.RouteUrl("TraiDat2")
+</p>

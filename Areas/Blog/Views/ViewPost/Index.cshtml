@@ -1,0 +1,67 @@
+@model List<Post>
+@{
+    var categories = ViewBag.categories as List<Category>;
+    var category = ViewBag.category as Category;
+    ViewData["Title"] = (category != null) ? category.Title :
+                        "Bài viết trong tất cả các chuyên mục";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="~/">Home</a></li>
+        @if(category != null){
+            var list = category.ListParents();
+            foreach(var c in list){
+                <li class="breadcrumb-item">
+                    <a asp-action="Index" asp-route-categoryslug="@c.Slug">@c.Title</a>
+                </li>
+            }
+        }
+    </ol>
+</nav>
+
+
+<h1>@ViewData["Title"]</h1>
+@if(category != null){
+    <p>@category.Descripton</p>
+}
+else{
+    <p>Bài viết trong tất cả các chuyên mục...</p>
+}
+<hr>
+
+@foreach(var post in Model){
+    <div class="d-flex border-bottom mb-3 pb-3">
+        <img src="/contents/241020-132450.png" class="me-3 " alt="Media Image" style="width: 100px;">
+        <div class="flex-grow-1">
+            <h5 class="mt-0">
+                <a asp-controller="ViewPost" asp-action="Detail" asp-route-postslug = "@post.Slug">
+                    @post.Title
+                </a>
+            </h5>
+            @post.Description
+            <div>
+                Chủ đề:
+                <strong class="text-danger"> @post.PostCategories.FirstOrDefault()?.Category.Title</strong>
+            </div>
+            <div class="author-row">
+                Tác giả: <strong>@post.Author.UserName</strong> |
+                Ngày cập nhật: <i>@post.DateUpdated.ToShortDateString()</i> |
+                Lượt xem: <i>@post.Views</i>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section Sidebar{
+    @await Component.InvokeAsync("App.Components.CategorySidebar",
+    new App.Components.CategorySidebar.CategorySidebarData(){
+        Categories = categories,
+        level = 0,
+        Categoryslug = ViewBag.categoryslug,
+        Controller = "ViewPost"
+    })
+}    
+
+<partial name="_PagingXTL" model="@ViewBag.pagingmodel" />

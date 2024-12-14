@@ -1,0 +1,107 @@
+@using App.Areas.Statistics.Models
+@model List<Post>
+@{
+    var categories = ViewBag.categories as List<Category>;
+    var category = ViewBag.category as Category;
+    ViewData["Title"] = (category != null) ? category.Title :
+                        "Bài viết trong tất cả các chuyên mục";
+    var TotalViews = (int)ViewBag.TotalViews;
+    var sortModel = ViewBag.sortModel as SortModel;
+                        
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="~/">Home</a></li>
+        @if(category != null){
+            var list = category.ListParents();
+            foreach(var c in list){
+                <li class="breadcrumb-item">
+                    <a asp-action="Index" asp-route-categoryslug="@c.Slug">@c.Title</a>
+                </li>
+            }
+        }
+    </ol>
+</nav>
+
+
+<h1>@ViewData["Title"]</h1>
+
+
+
+<hr>
+<h3>Tổng số bài viết: @Model.Count()</h3>
+<h3>Tổng số lượt xem: @TotalViews</h3>
+
+@foreach(var post in Model){
+    <div class="d-flex border-bottom mb-3 pb-3">
+        <img src="/contents/241020-132450.png" class="me-3 " alt="Media Image" style="width: 100px;">
+        <div class="flex-grow-1">
+            <h5 class="mt-0">
+                <a asp-controller="PostStat" asp-action="Detail" asp-area="Statistics" asp-route-postslug = "@post.Slug">
+                    @post.Title
+                </a>
+            </h5>
+            @post.Description
+            <div>
+                Chủ đề:
+                <strong class="text-danger"> @post.PostCategories.FirstOrDefault()?.Category.Title</strong>
+            </div>
+            <div class="author-row">
+                Tác giả: <strong>@post.Author.UserName</strong> |
+                Ngày tạo: <i>@post.DateCreated.ToShortDateString()</i> |
+                Lượt xem: <i>@post.Views</i>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section Sidebar{
+    @await Component.InvokeAsync("App.Components.CategorySidebar",
+    new App.Components.CategorySidebar.CategorySidebarData(){
+        Categories = categories,
+        level = 0,
+        Categoryslug = ViewBag.categoryslug,
+        Controller = "PostStat"
+    })
+
+    <hr>
+
+<div class="row">
+    @* Filter *@
+    <aside class="col-md-8">
+        <header class="card-header-custom">
+            <h5 class="card-custom-title">Filter</h5>
+        </header>
+        <form asp-action="Index" method="get">
+            <div class="card-group">
+                <article class="card card-filter">
+                    <div class="filter-content">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="@sortModel.DateFrom"></label>
+                                <input asp-for="@sortModel.DateFrom" type="date" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@sortModel.DateTo"></label>
+                                <input asp-for="@sortModel.DateTo" type="date" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@sortModel.Order"></label>
+                                <select asp-for="@sortModel.Order" class="form-control">
+                                    <option value="views">Lượt xem</option>
+                                    <option value="title">Tiêu đề</option>
+                                    <option value="date">Ngày tạo</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Lọc</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </form>
+    </aside> <!-- col.// -->
+</div>
+}    
+

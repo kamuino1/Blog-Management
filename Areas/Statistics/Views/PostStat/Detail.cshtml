@@ -1,0 +1,49 @@
+@model Post
+
+@{
+    var categories = ViewBag.categories as List<Category>;
+    var category = ViewBag.category as Category;
+    ViewData["Title"] = Model.Title;
+
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="~/">Home</a></li>
+        @if(category != null){
+            var list = category.ListParents();
+            foreach(var c in list){
+                <li class="breadcrumb-item">
+                    <a asp-action="Index" asp-route-categoryslug="@c.Slug">@c.Title</a>
+                </li>
+            }
+            <li class="breadcrumb-item">
+                    <a asp-action="Index" asp-route-categoryslug="@category.Slug">@category.Title</a>
+            </li>
+        }
+    </ol>
+</nav>
+
+<div class="detail-post">
+    <h1>@Model.Title</h1>
+    <div class="sapo">@Model.Description</div>
+    <div>
+        <i>Cập nhật: @Model.DateUpdated</i> / 
+        Tác giả: <strong>@Model.Author.UserName</strong> /
+        Lượt xem: @Model.Views
+    </div>
+    <hr>
+    @Html.Raw(Model.Content)
+</div>
+
+
+
+@section Sidebar{
+    @await Component.InvokeAsync("App.Components.CategorySidebar",
+    new App.Components.CategorySidebar.CategorySidebarData(){
+        Categories = categories,
+        level = 0,
+        Categoryslug = category.Slug,
+        Controller = "PostStat"
+    })
+}    
