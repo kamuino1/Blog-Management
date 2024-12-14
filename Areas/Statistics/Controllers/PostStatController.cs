@@ -26,35 +26,6 @@ namespace App.Areas.Statistics.Controllers
             _userManager = userManager;
         }
 
-        // [HttpGet]
-        // [Route("/stat/post/{categoryslug?}")]
-        // public async Task<IActionResult> Index(string categoryslug)
-        // {
-        //     Category category = null;
-        //     if (!string.IsNullOrEmpty(categoryslug))
-        //     {
-        //         category = await _context.Categories.FirstOrDefaultAsync(c => c.Slug == categoryslug);
-        //     }
-        //     var posts = await GetPostByUserAsync(category?.Id);
-
-        //     int totalPosts = posts.Count;
-        //     var totalViews = posts.Sum(post => post.Views);
-        //     var categories = GetCategories();
-
-        //     ViewBag.categories = categories;
-        //     ViewBag.TotalViews = totalViews;
-        //     ViewBag.category = category;
-        //     ViewBag.categoryslug = categoryslug;
-        //     ViewBag.sortModel = new SortModel()
-        //     {
-        //         DateFrom = new DateTime(2023, 1, 1),
-        //         DateTo = DateTime.Now,
-        //         Order = "date"
-        //     };
-
-        //     return View(posts);
-        // }
-
         [HttpGet]
         [Route("/stat/post/{categoryslug?}")]
         public async Task<IActionResult> Index(SortModel sortModel, string categoryslug)
@@ -66,10 +37,7 @@ namespace App.Areas.Statistics.Controllers
             }
             var posts = await GetPostByUserAsync(category?.Id);
 
-            if (sortModel.DateFrom != null && sortModel.DateTo != null)
-            {
-                posts = posts.Where(post => post.DateCreated >= sortModel.DateFrom && post.DateCreated <= sortModel.DateTo).ToList();
-            }
+            posts = FilterPost(sortModel.DateFrom, sortModel.DateTo, posts);
 
             if (!string.IsNullOrEmpty(sortModel.Order))
             {
@@ -153,6 +121,15 @@ namespace App.Areas.Statistics.Controllers
                             .Where(c => c.ParentCategory == null)
                             .ToList();
             return categories;
+        }
+
+        public List<Post> FilterPost(DateTime? dateFrom, DateTime? dateTo, List<Post> posts)
+        {
+            if (dateFrom != null && dateTo != null)
+            {
+                posts = posts.Where(post => post.DateCreated >= dateFrom && post.DateCreated <= dateTo).ToList();
+            }
+            return posts;
         }
     }
 }
